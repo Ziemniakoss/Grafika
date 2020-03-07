@@ -1,11 +1,16 @@
 package pl.ziemniak.grafika;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pl.ziemniak.grafika.utils.Screen;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -14,9 +19,12 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws IOException {
 		Screen c = new Screen(500, 500);
-		Scene s = new Scene(new HBox(c));
+		Parent root = FXMLLoader.load(getClass().getResource(File.separator + "MainMenu.fxml"));
+
+
+		Scene s = new Scene(new HBox(root));
 		primaryStage.setScene(s);
 		primaryStage.show();
 	}

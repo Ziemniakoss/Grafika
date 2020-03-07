@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import pl.ziemniak.grafika.utils.Screen?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+			xmlns:fx="http://javafx.com/fxml"
+			fx:controller="pl.ziemniak.grafika.controllers.MainMenuController" stylesheets="style.css">
+	<left>
+		<VBox>
+			<!--Kamera-->
+			<Label>Kamera</Label>
+			<GridPane>
+				<padding>
+					<Insets top="10" left="0" right="10" bottom="10"/>
+				</padding>
+				<Label styleClass="data-info">X</Label>
+				<Label fx:id="labelX" GridPane.columnIndex="1" styleClass="data-value">0.00</Label>
+
+				<Label styleClass="data-info" GridPane.rowIndex="1">Y</Label>
+				<Label fx:id="labelY" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="data-value">0.00
+				</Label>
+
+				<Label styleClass="data-info" GridPane.rowIndex="2">Z</Label>
+				<Label fx:id="labelZ" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="data-value">0.00
+				</Label>
+
+				<Label styleClass="data-info" GridPane.rowIndex="3">Roll</Label>
+				<Label fx:id="labelRoll" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="data-value">0.00
+				</Label>
+
+				<Label styleClass="data-info" GridPane.rowIndex="4">Yaw</Label>
+				<Label fx:id="lawYaw" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="data-value">0.00
+				</Label>
+
+				<Label styleClass="data-info" GridPane.rowIndex="5">Pitch</Label>
+				<Label fx:id="labelPitch" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="data-value">0.00
+				</Label>
+			</GridPane>
+		</VBox>
+	</left>
+	<center>
+		<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity">
+			<Screen AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+					AnchorPane.topAnchor="0" fx:id="screen" height="700" width="700"/>
+		</AnchorPane>
+	</center>
+</BorderPane>
