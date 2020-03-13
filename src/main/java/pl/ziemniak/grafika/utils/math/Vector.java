@@ -1,18 +1,21 @@
 package pl.ziemniak.grafika.utils.math;
 
+
 import java.util.Arrays;
 
-public class Vector {
-	public final double[] values;
+public class Vector implements IVector {
+	private final double[] values;
+	private final boolean vertical;
 
-	public Vector(int length) {
+	public Vector(boolean vertical, int length) {
 		if (length <= 0) {
 			throw new IllegalArgumentException("Length must be greater than 0");
 		}
 		values = new double[length];
+		this.vertical = vertical;
 	}
 
-	public Vector(double... values) {
+	public Vector(boolean vertical, double... values) {
 		if (values == null) {
 			throw new NullPointerException("Values can't be null");
 		}
@@ -20,17 +23,25 @@ public class Vector {
 			throw new IllegalArgumentException("Length must be grater than 0");
 		}
 		this.values = values;
-
+		this.vertical = vertical;
 	}
 
-	public void set(int field, double value) {
-		this.values[field] = value;
+	@Override
+	public void set(int index, double value) {
+		this.values[index] = value;
 	}
 
+	@Override
 	public double get(int field) {
 		return this.values[field];
 	}
 
+	@Override
+	public boolean isVertical() {
+		return vertical;
+	}
+
+	@Override
 	public int getLength() {
 		return values.length;
 	}
@@ -47,50 +58,90 @@ public class Vector {
 		return sb.toString();
 	}
 
+	@Override
 	public Vector multiply(double a) {
 		double[] result = values.clone();
 		for (int i = 0; i < result.length; i++) {
 			result[i] *= a;
 		}
-		return new Vector(result);
+		return new Vector(vertical, result);
 	}
 
-	public Vector multiply(Vector v) {
-		checkVector(v);
-		double[] result = values.clone();
-		for (int i = 0; i < result.length; i++) {
-			result[i] = values[i] * v.values[i];
+	@Override
+	public Vector multiply(IMatrix b) {
+		if (b == null) {
+			throw new NullPointerException("matrix can't be null");
 		}
-		return new Vector(result);
+		return vertical ? multiplyVertical(b) : multiplyHorizontal(b);
 	}
 
-	public Vector normalize() {
-		double magnitude = magnitude();
-		if(magnitude > 0) {
-			return new Vector(Arrays.stream(values).map(e -> e / magnitude).toArray());
+	private Vector multiplyVertical(IMatrix b){
+		if(getLength() != b.getColumns()){
+			throw new IllegalArgumentException("illegal amount of rows in matrix");
 		}
-		return new Vector(values.clone());
+		double [] result = new double[getLength()];
+		for(int i = 0; i< result.length; i++){
+			for(int j = 0; j < result.length; j++){
+				result[i] += get(j) * b.get(j,i);
+			}
+		}
+		return new Vector(true, result);
 	}
 
-	public double magnitude() {
-		return Math.sqrt(Arrays.stream(values).parallel().map(e -> e * e).sum());
+	private Vector multiplyHorizontal(IMatrix b){
+		if(b.getRows() != 1){
+			throw new IllegalArgumentException("Illegal amount of rows in matrix");
+		}
+		double [] result = new double[getLength()];
+		for(int i = 0; i < result.length; i++){
+			result[i] = get(i) * b.get(0,i);
+		}
+		return new Vector(false,result);
+
 	}
 
-	public Vector add(Vector v) {
-		checkVector(v);
+	@Override
+	public Vector add(IVector b) {
+		checkVector(b);
 		double[] result = values.clone();
 		for (int i = 0; i < values.length; i++) {
-			result[i] = v.values[i] + values[i];
+			result[i] = b.get(i) + values[i];
 		}
-		return new Vector(result);
+		return new Vector(vertical, result);
 	}
 
-	private void checkVector(Vector v) {
+	@Override
+	public Vector subtract(IVector b) {
+		checkVector(b);
+		double[] result = values.clone();
+		for (int i = 0; i < values.length; i++) {
+			result[i] -= b.get(i);
+		}
+		return new Vector(vertical, result);
+	}
+
+	private void checkVector(IVector v) {
 		if (v == null) {
 			throw new NullPointerException("Vector can't be null");
 		}
 		if (v.getLength() != getLength()) {
 			throw new IllegalArgumentException("Sizes don't match");
 		}
+		if (vertical != v.isVertical()) {
+			throw new IllegalArgumentException("Both vectors must have same orientation");
+		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Vector vector = (Vector) o;
+		return vertical == vector.vertical && Arrays.equals(values, vector.values);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(values);
 	}
 }
