@@ -41,13 +41,16 @@
 				<Label styleClass="data-info" GridPane.rowIndex="5">Pitch</Label>
 				<Label fx:id="labelPitch" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="data-value">0.00
 				</Label>
+
+				<Label styleClass="data-info" GridPane.rowIndex="6">Zoom</Label>
+				<Label fx:id="labelZoom" GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="data-value">1.0</Label>
 			</GridPane>
 		</VBox>
 	</left>
 	<center>
 		<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity">
 			<Screen AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-					AnchorPane.topAnchor="0" fx:id="screen" height="700" width="700"/>
+					AnchorPane.topAnchor="0" fx:id="screen" height="700" width="700" onKeyPressed="#handleKeyPress" onKeyReleased="#handleKeyRelease" onScroll="#handleScroll"/>
 		</AnchorPane>
 	</center>
 </BorderPane>

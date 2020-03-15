@@ -14,10 +14,12 @@ public class Screen extends Canvas {
 	private final static Color BACKGROUND_COLOR = Color.BLACK;
 
 	public Screen() {
+		this(0,0);
 	}
 
 	public Screen(double width, double height) {
 		super(width, height);
+		setFocusTraversable(true);
 	}
 
 	public void setZoom(double zoom) {
@@ -40,6 +42,12 @@ public class Screen extends Canvas {
 	}
 
 	public void clear() {
+		var gc = getGraphicsContext2D();
+		gc.setFill(BACKGROUND_COLOR);
+		gc.fillRect(0,0,getWidth(),getHeight());
+	}
 
+	public double getZoom() {
+		return zoom;
 	}
 }
