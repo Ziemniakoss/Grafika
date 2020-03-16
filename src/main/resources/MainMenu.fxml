@@ -30,16 +30,16 @@
 				<Label fx:id="labelZ" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="data-value">0.00
 				</Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="3">Roll</Label>
-				<Label fx:id="labelRoll" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="data-value">0.00
+				<Label styleClass="data-info" GridPane.rowIndex="3">Rotation X</Label>
+				<Label fx:id="labelRotX" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="data-value">0.00
 				</Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="4">Yaw</Label>
-				<Label fx:id="lawYaw" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="data-value">0.00
+				<Label styleClass="data-info" GridPane.rowIndex="4">Rotation Y</Label>
+				<Label fx:id="labelRotY" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="data-value">0.00
 				</Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="5">Pitch</Label>
-				<Label fx:id="labelPitch" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="data-value">0.00
+				<Label styleClass="data-info" GridPane.rowIndex="5">Rotation Z</Label>
+				<Label fx:id="labelRotZ" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="data-value">0.00
 				</Label>
 
 				<Label styleClass="data-info" GridPane.rowIndex="6">Zoom</Label>

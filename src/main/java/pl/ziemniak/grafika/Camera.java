@@ -1,5 +1,6 @@
 package pl.ziemniak.grafika;
 
+import pl.ziemniak.grafika.utils.math.RotationMatrix;
 import pl.ziemniak.grafika.utils.math.Vector;
 
 /**
@@ -8,9 +9,9 @@ import pl.ziemniak.grafika.utils.math.Vector;
  */
 public class Camera {
 	private final Vector coordinates;
-	private int rotationX;
-	private int rotationY;
-	private int rotationZ;
+	private double rotationX;
+	private double rotationY;
+	private double rotationZ;
 
 	public Camera() {
 		coordinates = new Vector(true, 0, 0, 0);
@@ -40,15 +41,15 @@ public class Camera {
 		coordinates.set(2, z);
 	}
 
-	public void rotateX(int degrees) {
+	public void rotateX(double degrees) {
 		setRotationX(rotationX + degrees);
 	}
 
-	public void rotateY(int degrees) {
+	public void rotateY(double degrees) {
 		setRotationY(rotationY + degrees);
 	}
 
-	public void rotateZ(int degrees) {
+	public void rotateZ(double degrees) {
 		setRotationZ(rotationZ + degrees);
 	}
 
@@ -66,27 +67,46 @@ public class Camera {
 		return coordinates;
 	}
 
-	public int getRotationX() {
+	public double getRotationX() {
 		return rotationX;
 	}
 
-	public void setRotationX(int rotationX) {
+	public void setRotationX(double rotationX) {
 		this.rotationX = rotationX;
 	}
 
-	public int getRotationY() {
+	public double getRotationY() {
 		return rotationY;
 	}
 
-	public void setRotationY(int rotationY) {
+	public void setRotationY(double rotationY) {
 		this.rotationY = rotationY;
 	}
 
-	public int getRotationZ() {
+	public double getRotationZ() {
 		return rotationZ;
 	}
 
-	public void setRotationZ(int rotationZ) {
+	public void setRotationZ(double rotationZ) {
 		this.rotationZ = rotationZ;
+	}
+
+	public void moveForward(double delta) {
+		Vector movement = new Vector(true, 0,0,delta);
+		Vector factual = RotationMatrix.rotationMatrixXYZ(rotationX,rotationY,rotationZ).multiply(movement);
+		setX(getX() + factual.get(0));
+		setY(getY()+ factual.get(1));
+		setZ(getZ() + factual.get(2));
+
+	}
+
+	/**
+	 * Pójdź w lewo lub prawo o deltę
+	 *
+	 * @param delta jeżeli dodatnia to w prawo a jeżeli ujemna w lewo
+	 */
+	public void moveToSide(double delta) {
+
+
 	}
 }

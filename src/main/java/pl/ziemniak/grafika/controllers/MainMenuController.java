@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
+import pl.ziemniak.grafika.Camera;
 import pl.ziemniak.grafika.UserMovementTypes;
 import pl.ziemniak.grafika.World;
 import pl.ziemniak.grafika.utils.io.IMapReader;
@@ -18,10 +19,14 @@ import pl.ziemniak.grafika.utils.rendering.Screen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
+	public Label labelRotZ;
+	public Label labelRotY;
+	public Label labelRotX;
 	@FXML
 	private Label labelZoom;
 	@FXML
@@ -32,18 +37,10 @@ public class MainMenuController implements Initializable {
 	private Label labelY;
 	@FXML
 	private Label labelZ;
-	@FXML
-	private Label labelRoll;
-	@FXML
-	private Label lawYaw;
-	@FXML
-	private Label labelPitch;
-	@FXML
-	private Label labelFPS;
 
 	private final double ADD_ZOOM_ON_SCROLL = 0.02;
-	private final double ROTATION_SPEED = 2; // stopnie na sekunde
-	private final double MOVEMENT_SPEED = 2; //punkty na sekunde
+	private final double ROTATION_SPEED = 10; // stopnie na sekunde
+	private final double MOVEMENT_SPEED = 10; //punkty na sekunde
 	private World world = World.getInstance();
 	private final HashMap<UserMovementTypes, Boolean> userInputState;
 	private final HashMap<KeyCode, UserMovementTypes> keyBindings;
@@ -107,21 +104,75 @@ public class MainMenuController implements Initializable {
 		}
 		renderer = new Renderer(screen, world.getCamera());
 		new AnimationTimer() {
+			private long lastUpdate = System.nanoTime();
+
 			@Override
 			public void handle(long currentNanoTime) {
+				double deltaSeconds = (currentNanoTime - lastUpdate) / 1_000_000_000.0;
+				lastUpdate = currentNanoTime;
+				updateCamera(deltaSeconds);
 				//todo uplyw czasu
 				//todo sprawdzenie stanu inputów
 				//todo zaktualizowanie stanu kamery
 				screen.clear();
-				for(Line l : world.getLines()){
+				for (Line l : world.getLines()) {
 					renderer.render(l);
 				}
+				updateCameraInfo();
+			}
 
+			private void updateCamera(double deltaSeconds) {
+				Camera camera = world.getCamera();
+				if (userInputState.get(UserMovementTypes.ROTATES_LEFT)) {
+					world.getCamera().rotateY(-deltaSeconds * ROTATION_SPEED);
+				}
+				if (userInputState.get(UserMovementTypes.ROTATES_RIGHT)) {
+					world.getCamera().rotateY(deltaSeconds * ROTATION_SPEED);
+				}
+				if (userInputState.get(UserMovementTypes.ROTATES_DOWN)) {
+					world.getCamera().rotateX(-deltaSeconds * ROTATION_SPEED);
+				}
+				if (userInputState.get(UserMovementTypes.ROTATES_UP)) {
+					world.getCamera().rotateX(deltaSeconds * ROTATION_SPEED);
+				}
+				if (userInputState.get(UserMovementTypes.TILTS_LEFT)) {
+					world.getCamera().rotateZ(deltaSeconds * ROTATION_SPEED);
+				}
+				if (userInputState.get(UserMovementTypes.TILTS_RIGHT)) {
+					world.getCamera().rotateZ(-deltaSeconds * ROTATION_SPEED);
+				}
+				if (userInputState.get(UserMovementTypes.MOVES_DOWN)) {
+					camera.setY(camera.getY() + MOVEMENT_SPEED * deltaSeconds);
+				}
+				if (userInputState.get(UserMovementTypes.MOVES_UP)) {
+					camera.setY(camera.getY() - MOVEMENT_SPEED * deltaSeconds);
+				}
+				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
+					camera.setX(camera.getX() + MOVEMENT_SPEED * deltaSeconds);
+				}
+				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
+
+				}
+				if (userInputState.get(UserMovementTypes.MOVES_BACKWARDS)) {
+					camera.moveForward(-deltaSeconds * MOVEMENT_SPEED);
+
+				}
+				if (userInputState.get(UserMovementTypes.MOVES_FORWARDS)) {
+					camera.moveForward(deltaSeconds * MOVEMENT_SPEED);
+				}
 			}
 		}.start();
 	}
 
 	private void updateCameraInfo() {
+		DecimalFormat formatter = new DecimalFormat("#.00");
+		labelZoom.setText(formatter.format(screen.getZoom()));
+		labelX.setText(formatter.format(world.getCamera().getX()));
+		labelY.setText(formatter.format(world.getCamera().getY()));
+		labelZ.setText(formatter.format(world.getCamera().getZ()));
 
+		labelRotX.setText(formatter.format(world.getCamera().getRotationX()));
+		labelRotY.setText(formatter.format(world.getCamera().getRotationY()));
+		labelRotZ.setText(formatter.format(world.getCamera().getRotationZ()));
 	}
 }
