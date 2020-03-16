@@ -1,5 +1,6 @@
 package pl.ziemniak.grafika.controllers;
 
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -8,8 +9,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import pl.ziemniak.grafika.UserMovementTypes;
 import pl.ziemniak.grafika.World;
-import pl.ziemniak.grafika.utils.Screen;
+import pl.ziemniak.grafika.utils.io.IMapReader;
+import pl.ziemniak.grafika.utils.io.JSONMapReader;
+import pl.ziemniak.grafika.utils.math.Line;
+import pl.ziemniak.grafika.utils.rendering.IRenderer;
+import pl.ziemniak.grafika.utils.rendering.Renderer;
+import pl.ziemniak.grafika.utils.rendering.Screen;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -40,6 +47,7 @@ public class MainMenuController implements Initializable {
 	private World world = World.getInstance();
 	private final HashMap<UserMovementTypes, Boolean> userInputState;
 	private final HashMap<KeyCode, UserMovementTypes> keyBindings;
+	private IRenderer renderer;
 
 	public MainMenuController() {
 		userInputState = new HashMap<>();
@@ -90,7 +98,27 @@ public class MainMenuController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		screen.setOnScroll(this::handleScroll);
-		//todo nieskoczona petla renderu i updatu info o camerze
+		IMapReader reader = new JSONMapReader("example.json");
+		try {
+			world.addAllLines(reader.read());
+		} catch (IOException e) {
+			//todo dialog
+			e.printStackTrace();
+		}
+		renderer = new Renderer(screen, world.getCamera());
+		new AnimationTimer() {
+			@Override
+			public void handle(long currentNanoTime) {
+				//todo uplyw czasu
+				//todo sprawdzenie stanu inputów
+				//todo zaktualizowanie stanu kamery
+				screen.clear();
+				for(Line l : world.getLines()){
+					renderer.render(l);
+				}
+
+			}
+		}.start();
 	}
 
 	private void updateCameraInfo() {

@@ -3,6 +3,7 @@ package pl.ziemniak.grafika;
 import pl.ziemniak.grafika.utils.math.Line;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class World {
@@ -18,6 +19,10 @@ public class World {
 		if (line != null) {
 			lines.add(line);
 		}
+	}
+
+	public void addAllLines(Collection<Line> lines){
+		this.lines.addAll(lines);
 	}
 
 	private World() {
