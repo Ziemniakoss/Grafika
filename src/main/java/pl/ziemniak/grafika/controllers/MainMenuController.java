@@ -39,8 +39,8 @@ public class MainMenuController implements Initializable {
 	private Label labelZ;
 
 	private final double ADD_ZOOM_ON_SCROLL = 0.02;
-	private final double ROTATION_SPEED = 10; // stopnie na sekunde
-	private final double MOVEMENT_SPEED = 10; //punkty na sekunde
+	private final double ROTATION_SPEED = 30; // stopnie na sekunde
+	private final double MOVEMENT_SPEED = 20; //punkty na sekunde
 	private World world = World.getInstance();
 	private final HashMap<UserMovementTypes, Boolean> userInputState;
 	private final HashMap<KeyCode, UserMovementTypes> keyBindings;
@@ -151,6 +151,7 @@ public class MainMenuController implements Initializable {
 					camera.setX(camera.getX() + MOVEMENT_SPEED * deltaSeconds);
 				}
 				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
+					camera.moveToSide(-MOVEMENT_SPEED * deltaSeconds);
 
 				}
 				if (userInputState.get(UserMovementTypes.MOVES_BACKWARDS)) {

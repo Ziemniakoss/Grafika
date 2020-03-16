@@ -11,7 +11,7 @@ import pl.ziemniak.grafika.utils.math.Vector;
 public class Renderer implements IRenderer {
 	private final Screen screen;
 	private final Camera camera;
-	private double d = -40;
+	private double d = -400;
 
 	public Renderer(Screen screen, Camera camera) {
 		this.screen = screen;
@@ -22,6 +22,13 @@ public class Renderer implements IRenderer {
 	public void render(Line line) {
 		Vector aa = transformAndRotate(line.getA());
 		Vector bb = transformAndRotate(line.getB());
+		if(aa.get(2) < 0 || bb.get(2) < 0)
+			return;
+		if(aa.get(2) < d){
+			aa = cut(aa,bb);
+		}else if(bb.get(2) < d){
+			bb = cut(bb,aa);
+		}
 		screen.drawLine(aa.get(0), aa.get(1), bb.get(0), bb.get(1), 2, line.getColor());//todo wyliczanie grubosci
 	}
 
@@ -30,7 +37,7 @@ public class Renderer implements IRenderer {
 		Vector rotated = RotationMatrix.rotationMatrixXYZ(camera.getRotationX(), camera.getRotationY(), camera.getRotationZ()).multiply(translated);
 		double x = rotated.get(0) * (d / rotated.get(2));
 		double y = rotated.get(1) * (d / rotated.get(2));
-		return new Vector(true, x, y);
+		return new Vector(true, x, y, rotated.get(2));
 	}
 
 	/**
@@ -40,14 +47,13 @@ public class Renderer implements IRenderer {
 	 * @return
 	 */
 	private Vector cut(Vector p1, Vector p2) {
+		System.out.println("Cuttint "+p1);
 		//definiujemy prostą 3d przez punkt i wektor
-		System.out.println("thniemy "+p1+p2);
 		Vector v = p2.subtract(p1);
-		double a = p2.get(2) / (p1.get(2) - p2.get(2));
-		double x = p2.get(0) + a *(p2.get(0) - p1.get(0));
-		double y = p2.get(1) + a *(p2.get(1) - p1.get(1));
-		System.out.println(x+" ");
-		return new Vector(true,x,y,0);
+		double a = (d- p2.get(2)) / v.get(2);
+		double x = p2.get(0) + a * v.get(0);
+		double y = p2.get(1) + a * v.get(1);
+		return new Vector(true,x,y,d);
 
 	}
 }

@@ -92,11 +92,9 @@ public class Camera {
 	}
 
 	public void moveForward(double delta) {
-		Vector movement = new Vector(true, 0,0,delta);
-		Vector factual = RotationMatrix.rotationMatrixXYZ(rotationX,rotationY,rotationZ).multiply(movement);
-		setX(getX() + factual.get(0));
-		setY(getY()+ factual.get(1));
-		setZ(getZ() + factual.get(2));
+		double radians = Math.toRadians(rotationY);
+		setX(getX() + Math.sin(radians) * delta);
+		setZ(getZ() + Math.cos(radians) * delta);
 
 	}
 
@@ -106,7 +104,10 @@ public class Camera {
 	 * @param delta jeżeli dodatnia to w prawo a jeżeli ujemna w lewo
 	 */
 	public void moveToSide(double delta) {
-
-
+		Vector movement = new Vector(true,delta,0,delta);
+		Vector factual = RotationMatrix.rotationMatrixXYZ(90,0,rotationZ).multiply(movement);
+		setZ(getX() + factual.get(0));
+		setY(getY() + factual.get(1));
+		setZ(getZ() + factual.get(2));
 	}
 }
