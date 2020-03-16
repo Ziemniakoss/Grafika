@@ -124,10 +124,10 @@ public class MainMenuController implements Initializable {
 			private void updateCamera(double deltaSeconds) {
 				Camera camera = world.getCamera();
 				if (userInputState.get(UserMovementTypes.ROTATES_LEFT)) {
-					world.getCamera().rotateY(-deltaSeconds * ROTATION_SPEED);
+					world.getCamera().rotateY(+deltaSeconds * ROTATION_SPEED);
 				}
 				if (userInputState.get(UserMovementTypes.ROTATES_RIGHT)) {
-					world.getCamera().rotateY(deltaSeconds * ROTATION_SPEED);
+					world.getCamera().rotateY(-deltaSeconds * ROTATION_SPEED);
 				}
 				if (userInputState.get(UserMovementTypes.ROTATES_DOWN)) {
 					world.getCamera().rotateX(-deltaSeconds * ROTATION_SPEED);
@@ -148,11 +148,10 @@ public class MainMenuController implements Initializable {
 					camera.setY(camera.getY() - MOVEMENT_SPEED * deltaSeconds);
 				}
 				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
-					camera.setX(camera.getX() + MOVEMENT_SPEED * deltaSeconds);
+					camera.moveToRight(deltaSeconds * MOVEMENT_SPEED);
 				}
-				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
-					camera.moveToSide(-MOVEMENT_SPEED * deltaSeconds);
-
+				if (userInputState.get(UserMovementTypes.MOVES_LEFT)) {
+					camera.moveToRight(-deltaSeconds * MOVEMENT_SPEED);
 				}
 				if (userInputState.get(UserMovementTypes.MOVES_BACKWARDS)) {
 					camera.moveForward(-deltaSeconds * MOVEMENT_SPEED);

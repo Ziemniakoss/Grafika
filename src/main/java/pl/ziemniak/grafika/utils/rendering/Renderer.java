@@ -29,7 +29,7 @@ public class Renderer implements IRenderer {
 		}else if(bb.get(2) < d){
 			bb = cut(bb,aa);
 		}
-		screen.drawLine(aa.get(0), aa.get(1), bb.get(0), bb.get(1), 2, line.getColor());//todo wyliczanie grubosci
+		screen.drawLine(aa.get(0), aa.get(1), bb.get(0), bb.get(1), 4, line.getColor());//todo wyliczanie grubosci
 	}
 
 	private Vector transformAndRotate(Vector v) {

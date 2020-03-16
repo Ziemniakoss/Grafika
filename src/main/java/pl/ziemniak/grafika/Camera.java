@@ -72,7 +72,7 @@ public class Camera {
 	}
 
 	public void setRotationX(double rotationX) {
-		this.rotationX = rotationX;
+		this.rotationX = rotationX % 360;
 	}
 
 	public double getRotationY() {
@@ -80,7 +80,7 @@ public class Camera {
 	}
 
 	public void setRotationY(double rotationY) {
-		this.rotationY = rotationY;
+		this.rotationY = rotationY % 360;
 	}
 
 	public double getRotationZ() {
@@ -88,7 +88,7 @@ public class Camera {
 	}
 
 	public void setRotationZ(double rotationZ) {
-		this.rotationZ = rotationZ;
+		this.rotationZ = rotationZ %360;
 	}
 
 	public void moveForward(double delta) {
@@ -103,11 +103,10 @@ public class Camera {
 	 *
 	 * @param delta jeżeli dodatnia to w prawo a jeżeli ujemna w lewo
 	 */
-	public void moveToSide(double delta) {
-		Vector movement = new Vector(true,delta,0,delta);
-		Vector factual = RotationMatrix.rotationMatrixXYZ(90,0,rotationZ).multiply(movement);
-		setZ(getX() + factual.get(0));
-		setY(getY() + factual.get(1));
-		setZ(getZ() + factual.get(2));
+	public void moveToRight(double delta) {
+		double radians = Math.toRadians(rotationY);
+		setZ(getZ() + delta * Math.sin(radians));
+		setX(getX() + delta * Math.cos(radians));
+
 	}
 }
