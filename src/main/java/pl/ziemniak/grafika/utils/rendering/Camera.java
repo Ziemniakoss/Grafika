@@ -1,4 +1,4 @@
-package pl.ziemniak.grafika;
+package pl.ziemniak.grafika.utils.rendering;
 
 import pl.ziemniak.grafika.utils.math.RotationMatrix;
 import pl.ziemniak.grafika.utils.math.Vector;
@@ -12,6 +12,7 @@ public class Camera {
 	private double rotationX;
 	private double rotationY;
 	private double rotationZ;
+	private double zoom  = 1;
 
 	public Camera() {
 		coordinates = new Vector(true, 0, 0, 0);
@@ -95,7 +96,6 @@ public class Camera {
 		double radians = Math.toRadians(rotationY);
 		setX(getX() + Math.sin(radians) * delta);
 		setZ(getZ() + Math.cos(radians) * delta);
-
 	}
 
 	/**
@@ -104,10 +104,21 @@ public class Camera {
 	 * @param delta jeżeli dodatnia to w prawo a jeżeli ujemna w lewo
 	 */
 	public void moveToSide(double delta) {
-		Vector movement = new Vector(true,delta,0,delta);
-		Vector factual = RotationMatrix.rotationMatrixXYZ(90,0,rotationZ).multiply(movement);
-		setZ(getX() + factual.get(0));
-		setY(getY() + factual.get(1));
-		setZ(getZ() + factual.get(2));
+		double radians = Math.toRadians(rotationY - 90);
+		setX(getX() + Math.sin(radians) * delta);
+		setZ(getZ() + Math.cos(radians) * delta);
 	}
+
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+	}
+
+	public double getZoom() {
+		return zoom;
+	}
+
+	public void addToZoom(double zoom) {
+		this.zoom += zoom;
+	}
+
 }

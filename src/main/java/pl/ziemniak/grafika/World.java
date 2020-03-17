@@ -1,6 +1,7 @@
 package pl.ziemniak.grafika;
 
 import pl.ziemniak.grafika.utils.math.Line;
+import pl.ziemniak.grafika.utils.rendering.Camera;
 
 import java.util.ArrayList;
 import java.util.Collection;

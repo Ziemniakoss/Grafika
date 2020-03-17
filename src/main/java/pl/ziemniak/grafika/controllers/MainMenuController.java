@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import pl.ziemniak.grafika.Camera;
+import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.UserMovementTypes;
 import pl.ziemniak.grafika.World;
 import pl.ziemniak.grafika.utils.io.IMapReader;
@@ -84,11 +84,11 @@ public class MainMenuController implements Initializable {
 	@FXML
 	private void handleScroll(ScrollEvent scrollEvent) {
 		if (scrollEvent.getDeltaY() > 0) {
-			screen.addToZoom(ADD_ZOOM_ON_SCROLL);
+			world.getCamera().addToZoom(ADD_ZOOM_ON_SCROLL);
 		} else {
-			screen.addToZoom(-ADD_ZOOM_ON_SCROLL);
+			world.getCamera().addToZoom(-ADD_ZOOM_ON_SCROLL);
 		}
-		labelZoom.setText(screen.getZoom() + "");
+		labelZoom.setText(world.getCamera().getZoom() + "");
 
 	}
 
@@ -111,9 +111,6 @@ public class MainMenuController implements Initializable {
 				double deltaSeconds = (currentNanoTime - lastUpdate) / 1_000_000_000.0;
 				lastUpdate = currentNanoTime;
 				updateCamera(deltaSeconds);
-				//todo uplyw czasu
-				//todo sprawdzenie stanu inputów
-				//todo zaktualizowanie stanu kamery
 				screen.clear();
 				for (Line l : world.getLines()) {
 					renderer.render(l);
@@ -148,9 +145,9 @@ public class MainMenuController implements Initializable {
 					camera.setY(camera.getY() - MOVEMENT_SPEED * deltaSeconds);
 				}
 				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
-					camera.setX(camera.getX() + MOVEMENT_SPEED * deltaSeconds);
+					camera.moveToSide(deltaSeconds * MOVEMENT_SPEED);
 				}
-				if (userInputState.get(UserMovementTypes.MOVES_RIGHT)) {
+				if (userInputState.get(UserMovementTypes.MOVES_LEFT)) {
 					camera.moveToSide(-MOVEMENT_SPEED * deltaSeconds);
 
 				}
@@ -167,7 +164,7 @@ public class MainMenuController implements Initializable {
 
 	private void updateCameraInfo() {
 		DecimalFormat formatter = new DecimalFormat("#.00");
-		labelZoom.setText(formatter.format(screen.getZoom()));
+		labelZoom.setText(formatter.format(world.getCamera().getZoom()));
 		labelX.setText(formatter.format(world.getCamera().getX()));
 		labelY.setText(formatter.format(world.getCamera().getY()));
 		labelZ.setText(formatter.format(world.getCamera().getZ()));

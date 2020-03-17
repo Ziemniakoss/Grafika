@@ -1,6 +1,5 @@
 package pl.ziemniak.grafika.utils.rendering;
 
-import pl.ziemniak.grafika.Camera;
 import pl.ziemniak.grafika.utils.math.Line;
 import pl.ziemniak.grafika.utils.math.RotationMatrix;
 import pl.ziemniak.grafika.utils.math.Vector;
@@ -29,7 +28,7 @@ public class Renderer implements IRenderer {
 		}else if(bb.get(2) < d){
 			bb = cut(bb,aa);
 		}
-		screen.drawLine(aa.get(0), aa.get(1), bb.get(0), bb.get(1), 2, line.getColor());//todo wyliczanie grubosci
+		screen.drawLine(aa.get(0) * camera.getZoom(), aa.get(1)* camera.getZoom(), bb.get(0)* camera.getZoom(), bb.get(1)* camera.getZoom(), 2* camera.getZoom(), line.getColor());//todo wyliczanie grubosci
 	}
 
 	private Vector transformAndRotate(Vector v) {
