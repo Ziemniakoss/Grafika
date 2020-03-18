@@ -121,10 +121,10 @@ public class MainMenuController implements Initializable {
 			private void updateCamera(double deltaSeconds) {
 				Camera camera = world.getCamera();
 				if (userInputState.get(UserMovementTypes.ROTATES_LEFT)) {
-					world.getCamera().rotateY(-deltaSeconds * ROTATION_SPEED);
+					world.getCamera().rotateY(deltaSeconds * ROTATION_SPEED);
 				}
 				if (userInputState.get(UserMovementTypes.ROTATES_RIGHT)) {
-					world.getCamera().rotateY(deltaSeconds * ROTATION_SPEED);
+					world.getCamera().rotateY(-deltaSeconds * ROTATION_SPEED);
 				}
 				if (userInputState.get(UserMovementTypes.ROTATES_DOWN)) {
 					world.getCamera().rotateX(-deltaSeconds * ROTATION_SPEED);

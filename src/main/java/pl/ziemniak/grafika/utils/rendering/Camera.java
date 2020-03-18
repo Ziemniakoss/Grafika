@@ -1,6 +1,5 @@
 package pl.ziemniak.grafika.utils.rendering;
 
-import pl.ziemniak.grafika.utils.math.RotationMatrix;
 import pl.ziemniak.grafika.utils.math.Vector;
 
 /**
