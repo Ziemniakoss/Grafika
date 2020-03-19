@@ -1,6 +1,5 @@
-package pl.ziemniak.grafika;
+package pl.ziemniak.grafika.utils.rendering;
 
-import pl.ziemniak.grafika.utils.math.RotationMatrix;
 import pl.ziemniak.grafika.utils.math.Vector;
 
 /**
@@ -12,6 +11,7 @@ public class Camera {
 	private double rotationX;
 	private double rotationY;
 	private double rotationZ;
+	private double zoom  = 1;
 
 	public Camera() {
 		coordinates = new Vector(true, 0, 0, 0);
@@ -72,7 +72,7 @@ public class Camera {
 	}
 
 	public void setRotationX(double rotationX) {
-		this.rotationX = rotationX % 360;
+		this.rotationX = rotationX;
 	}
 
 	public double getRotationY() {
@@ -80,7 +80,7 @@ public class Camera {
 	}
 
 	public void setRotationY(double rotationY) {
-		this.rotationY = rotationY % 360;
+		this.rotationY = rotationY;
 	}
 
 	public double getRotationZ() {
@@ -88,14 +88,13 @@ public class Camera {
 	}
 
 	public void setRotationZ(double rotationZ) {
-		this.rotationZ = rotationZ %360;
+		this.rotationZ = rotationZ;
 	}
 
 	public void moveForward(double delta) {
 		double radians = Math.toRadians(rotationY);
 		setX(getX() + Math.sin(radians) * delta);
 		setZ(getZ() + Math.cos(radians) * delta);
-
 	}
 
 	/**
@@ -103,10 +102,22 @@ public class Camera {
 	 *
 	 * @param delta jeżeli dodatnia to w prawo a jeżeli ujemna w lewo
 	 */
-	public void moveToRight(double delta) {
-		double radians = Math.toRadians(rotationY);
-		setZ(getZ() + delta * Math.sin(radians));
-		setX(getX() + delta * Math.cos(radians));
-
+	public void moveToSide(double delta) {
+		double radians = Math.toRadians(rotationY - 90);
+		setX(getX() + Math.sin(radians) * delta);
+		setZ(getZ() + Math.cos(radians) * delta);
 	}
+
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+	}
+
+	public double getZoom() {
+		return zoom;
+	}
+
+	public void addToZoom(double zoom) {
+		this.zoom += zoom;
+	}
+
 }

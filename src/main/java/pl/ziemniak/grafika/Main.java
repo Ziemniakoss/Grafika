@@ -20,7 +20,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Screen c = new Screen(500, 500);
-		Parent root = FXMLLoader.load(getClass().getResource(File.separator + "MainMenu.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(File.separator + "MainMenu.fxml"));
 		Scene s = new Scene(new HBox(root));
 		primaryStage.setScene(s);
 		primaryStage.show();
