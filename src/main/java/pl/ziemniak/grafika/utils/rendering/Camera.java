@@ -1,5 +1,6 @@
 package pl.ziemniak.grafika.utils.rendering;
 
+import pl.ziemniak.grafika.utils.math.RotationMatrix;
 import pl.ziemniak.grafika.utils.math.Vector;
 
 /**
@@ -11,10 +12,13 @@ public class Camera {
 	private double rotationX;
 	private double rotationY;
 	private double rotationZ;
-	private double zoom  = 1;
+	private RotationMatrix rotationMatrix;
+	private double zoom = 1;
+
 
 	public Camera() {
-		coordinates = new Vector(true, 0, 0, 0);
+		coordinates = new Vector(true, 30, 40, -40);
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(0, 0, 0);
 	}
 
 	public double getX() {
@@ -73,6 +77,7 @@ public class Camera {
 
 	public void setRotationX(double rotationX) {
 		this.rotationX = rotationX;
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(rotationX, rotationY, rotationZ);
 	}
 
 	public double getRotationY() {
@@ -81,6 +86,7 @@ public class Camera {
 
 	public void setRotationY(double rotationY) {
 		this.rotationY = rotationY;
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(rotationX, rotationY, rotationZ);
 	}
 
 	public double getRotationZ() {
@@ -89,6 +95,7 @@ public class Camera {
 
 	public void setRotationZ(double rotationZ) {
 		this.rotationZ = rotationZ;
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(rotationX, rotationY, rotationZ);
 	}
 
 	public void moveForward(double delta) {
@@ -120,4 +127,7 @@ public class Camera {
 		this.zoom += zoom;
 	}
 
+	public RotationMatrix getRotationMatrix() {
+		return rotationMatrix;
+	}
 }
