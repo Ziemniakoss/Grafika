@@ -1,41 +1,27 @@
 package pl.ziemniak.grafika;
 
-import pl.ziemniak.grafika.utils.math.Line;
+import pl.ziemniak.grafika.utils.Object3D;
 import pl.ziemniak.grafika.utils.rendering.Camera;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class World {
-	private final static World instance = new World();
 	private final Camera camera;
-	private final List<Line> lines;
+	private final Collection<Object3D> object3DS;
 
-	public static World getInstance() {
-		return instance;
+
+	public World(Collection<Object3D> object3DS) {
+		this.object3DS = object3DS;
+		camera = new Camera();
 	}
 
-	public void addLine(Line line) {
-		if (line != null) {
-			lines.add(line);
-		}
+	public Collection<Object3D> getObject3DS() {
+		return object3DS;
 	}
 
-	public void addAllLines(Collection<Line> lines){
-		this.lines.addAll(lines);
-	}
-
-	private World() {
-		this.camera = new Camera();
-		this.lines = new ArrayList<>();
-	}
 
 	public Camera getCamera() {
 		return camera;
 	}
 
-	public List<Line> getLines() {
-		return lines;
-	}
 }

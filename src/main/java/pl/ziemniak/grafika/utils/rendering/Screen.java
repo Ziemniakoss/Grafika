@@ -19,6 +19,7 @@ public class Screen extends Canvas {
 	public Screen(double width, double height) {
 		super(width, height);
 		setFocusTraversable(true);
+		setOnMouseClicked(e -> requestFocus());
 	}
 
 	public void drawLine(double x1, double y1, double x2, double y2, double thiccness, Color color) {
@@ -37,4 +38,6 @@ public class Screen extends Canvas {
 		gc.setFill(BACKGROUND_COLOR);
 		gc.fillRect(0, 0, getWidth(), getHeight());
 	}
+
+
 }

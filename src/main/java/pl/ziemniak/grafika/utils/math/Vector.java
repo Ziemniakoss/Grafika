@@ -75,28 +75,28 @@ public class Vector implements IVector {
 		return vertical ? multiplyVertical(b) : multiplyHorizontal(b);
 	}
 
-	private Vector multiplyVertical(IMatrix b){
-		if(getLength() != b.getColumns()){
+	private Vector multiplyVertical(IMatrix b) {
+		if (getLength() != b.getColumns()) {
 			throw new IllegalArgumentException("illegal amount of rows in matrix");
 		}
-		double [] result = new double[getLength()];
-		for(int i = 0; i< result.length; i++){
-			for(int j = 0; j < result.length; j++){
-				result[i] += get(j) * b.get(j,i);
+		double[] result = new double[getLength()];
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result.length; j++) {
+				result[i] += get(j) * b.get(j, i);
 			}
 		}
 		return new Vector(true, result);
 	}
 
-	private Vector multiplyHorizontal(IMatrix b){
-		if(b.getRows() != 1){
+	private Vector multiplyHorizontal(IMatrix b) {
+		if (b.getRows() != 1) {
 			throw new IllegalArgumentException("Illegal amount of rows in matrix");
 		}
-		double [] result = new double[getLength()];
-		for(int i = 0; i < result.length; i++){
-			result[i] = get(i) * b.get(0,i);
+		double[] result = new double[getLength()];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = get(i) * b.get(0, i);
 		}
-		return new Vector(false,result);
+		return new Vector(false, result);
 
 	}
 
