@@ -21,7 +21,7 @@
 				</padding>
 
 				<Label fx:id="labelWorldName" styleClass="data-info">Przykład</Label>
-				<Button fx:id="buttonReadWorld" styleClass="dark-button" onAction="#readWorld" GridPane.columnIndex="1">Wczytaj</Button>
+				<Button  styleClass="dark-button" onAction="#readWorld" GridPane.columnIndex="1">Wczytaj</Button>
 
 				<Label styleClass="data-info" GridPane.rowIndex="1">X</Label>
 				<Label fx:id="labelX" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="data-value">0.00</Label>

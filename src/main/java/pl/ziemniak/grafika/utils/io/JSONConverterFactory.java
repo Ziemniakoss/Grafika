@@ -5,6 +5,8 @@ public class JSONConverterFactory {
 		switch (type) {
 			case "LINE":
 				return new JSONToLineConverter();
+			case "TRIANGLE":
+				return new JSONToTriangleConverter();
 			default:
 				return null;
 		}

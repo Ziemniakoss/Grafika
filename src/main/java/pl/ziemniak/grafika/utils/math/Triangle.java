@@ -1,5 +1,6 @@
 package pl.ziemniak.grafika.utils.math;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import pl.ziemniak.grafika.utils.Object3D;
 import pl.ziemniak.grafika.utils.rendering.Camera;
@@ -13,14 +14,20 @@ public class Triangle extends Object3D {
 	private final Vector b;
 	private final Vector c;
 	private final Color border;
+	/**
+	 * Kolor wypełnienia trójkąta, jeżeli null to nie będzie
+	 * miał wypełnienia a jedynie krawędzie
+	 */
 	private final Color fill;
 
 	/**
 	 * Tworzy trójkąt o podanych punktach
 	 *
-	 * @param a punkt a
-	 * @param b punkt b
-	 * @param c punkt c
+	 * @param a      punkt a
+	 * @param b      punkt b
+	 * @param c      punkt c
+	 * @param border Kolor krawędzi.
+	 * @param fill   Kolor wypełnienia. Jeżeli null to będzie rysowany jedynie kontur figury
 	 * @throws NullPointerException jeżeli którykolwiek z punktów będzie nullem
 	 */
 	public Triangle(Vector a, Vector b, Vector c, Color border, Color fill) {
@@ -48,7 +55,22 @@ public class Triangle extends Object3D {
 
 	@Override
 	public void render(Screen screen, double zoom, double d) {
+		renderBorder(screen, zoom, d);
+		if (fill != null) {
+			renderFill(screen, zoom, d);
+		}
+	}
+
+	private void renderFill(Screen screen, double zoom, double d) {
 		//todo
+		GraphicsContext gc = screen.getGraphicsContext2D();
+	}
+
+	private void renderBorder(Screen screen, double zoom, double d) {
+		//Reuse line rendering
+		new Line(a, b, border).render(screen, zoom, d);
+		new Line(c, b, border).render(screen, zoom, d);
+		new Line(a, c, border).render(screen, zoom, d);
 	}
 
 	@Override

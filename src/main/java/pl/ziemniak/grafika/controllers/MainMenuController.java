@@ -18,9 +18,6 @@ import pl.ziemniak.grafika.utils.io.*;
 import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.UserMovementTypes;
 import pl.ziemniak.grafika.World;
-import pl.ziemniak.grafika.utils.math.Line;
-import pl.ziemniak.grafika.utils.rendering.IRenderer;
-import pl.ziemniak.grafika.utils.rendering.Renderer;
 import pl.ziemniak.grafika.utils.rendering.Screen;
 
 import java.io.File;
@@ -33,9 +30,14 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class MainMenuController implements Initializable {
-	public Label labelRotZ;
-	public Label labelRotY;
-	public Label labelRotX;
+	@FXML
+	private Label labelRotZ;
+	@FXML
+	private Label labelRotY;
+	@FXML
+	private Label labelRotX;
+	@FXML
+	private Label labelWorldName;
 	@FXML
 	private Label labelZoom;
 	@FXML
@@ -53,7 +55,6 @@ public class MainMenuController implements Initializable {
 	private World world;
 	private final HashMap<UserMovementTypes, Boolean> userInputState;
 	private final HashMap<KeyCode, UserMovementTypes> keyBindings;
-	private IRenderer renderer;
 
 	public MainMenuController() {
 		userInputState = new HashMap<>();
@@ -208,5 +209,6 @@ public class MainMenuController implements Initializable {
 	public void readWorldFromFile(String filename) throws IOException, NonParsableWorldException {
 		JSONWorldReader reader = new JSONWorldReader(filename);
 		world = reader.readFromFile();
+		labelWorldName.setText(filename);
 	}
 }
