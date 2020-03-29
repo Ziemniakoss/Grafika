@@ -51,6 +51,11 @@ public class Line extends Object3D {
 	}
 
 	@Override
+	public double getMinDepth() {
+		return Math.min(a.get(2),b.get(2));
+	}
+
+	@Override
 	public void render(Screen screen, double zoom, double d) {
 		if (a.get(2) < 0 && b.get(2) < 0) {
 			return;

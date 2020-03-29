@@ -3,8 +3,12 @@ package pl.ziemniak.grafika.utils.math;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import pl.ziemniak.grafika.utils.Object3D;
+import pl.ziemniak.grafika.utils.Utils3D;
 import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.utils.rendering.Screen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Prosta reprezentacja trójkąta w przestrzeni 3D
@@ -53,17 +57,85 @@ public class Triangle extends Object3D {
 		return c;
 	}
 
+	/**
+	 * Renederuje trójkąt. Kontur będzie wyrenderowany obowiązkowo, wypełnienie
+	 * tylko wtedy, gdy jego kolor nie jest nullem
+	 *
+	 * @param screen ekran na któ©ym należy wyświetlić dany obiekt
+	 * @param zoom   zoom z którym powinna być wyrenderowana figura.
+	 * @param d      odległość kamery od rzutnii
+	 */
 	@Override
 	public void render(Screen screen, double zoom, double d) {
-		renderBorder(screen, zoom, d);
+		//renderBorder(screen, zoom, d);
 		if (fill != null) {
 			renderFill(screen, zoom, d);
 		}
 	}
 
 	private void renderFill(Screen screen, double zoom, double d) {
-		//todo
+		if (a.get(2) < 0 && b.get(2) < 0 && c.get(2) < 0) {
+			System.out.println("a");
+			return;
+		}
 		GraphicsContext gc = screen.getGraphicsContext2D();
+		List<Vector> points ;
+		if (a.get(2) >= 0) {
+			points = calculatePoints(a, b, c);
+		} else if (b.get(2) >= 0) {
+			points = calculatePoints(b, c, a);
+		} else {
+			points = calculatePoints(c, a, b);
+		}
+		double[] xp = new double[4];
+		double[] yp = new double[4];
+
+		for (int i = 0; i < points.size(); i++) {
+			Vector casted = Utils3D.cast(points.get(i), d);
+			double x = casted.get(0) * zoom + (screen.getWidth() / 2);
+			double y = (casted.get(1) * zoom * (-1)) + (screen.getHeight() / 2);
+			xp[i] = x;
+			yp[i] = y;
+		}
+		gc.setFill(fill);
+		gc.fillPolygon(xp, yp, points.size());
+	}
+
+	/**
+	 * Oblicza punkty, które będą krawędziami wyrerenderowanego trójkąta.
+	 * Ponieważ jeden lub 2 z wierzchołków mogą mieć z < 0 zwraca listę albo
+	 * 3 albo 4 elementową.
+	 *
+	 * @param a wierchołek,który ma <b>z >= 0</b>
+	 * @param b wierzchołek b, może mieć z < 0
+	 * @param c wierzchołek c, może mieć z < 0
+	 * @return listę punktów, reprezentującą część trójkąta z z >= 0. Może mieć 3 lub 4 elementy
+	 */
+	private List<Vector> calculatePoints(Vector a, Vector b, Vector c) {
+		List<Vector> points = new ArrayList<>(4);
+		points.add(a);
+		if (b.get(2) < 0 && c.get(2) < 0) {
+			b = Utils3D.cut(b, a);
+			c = Utils3D.cut(c, b);
+			points.add(b);
+			points.add(c);
+		} else if (b.get(2) < 0) {
+			Vector ab = Utils3D.cut(b, a);
+			Vector bc = Utils3D.cut(b, c);
+			points.add(ab);
+			points.add(bc);
+			points.add(c);
+		} else if (c.get(2) < 0) {
+			Vector bc = Utils3D.cut(c, b);
+			Vector ca = Utils3D.cut(c, a);
+			points.add(b);
+			points.add(bc);
+			points.add(ca);
+		} else {
+			points.add(b);
+			points.add(c);
+		}
+		return points;
 	}
 
 	private void renderBorder(Screen screen, double zoom, double d) {
@@ -84,5 +156,10 @@ public class Triangle extends Object3D {
 	@Override
 	public double getMaxDepth() {
 		return Math.max(a.get(2), Math.max(b.get(2), c.get(2)));
+	}
+
+	@Override
+	public double getMinDepth() {
+		return Math.min(a.get(2),Math.min(b.get(2),c.get(2)));
 	}
 }

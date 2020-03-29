@@ -125,8 +125,9 @@ public class MainMenuController implements Initializable {
 						map(e -> e.adjustToCamera(world.getCamera())).
 						sorted(new DepthComparator()).
 						collect(Collectors.toList());
-				for (Object3D l : adjusted) {
-					l.render(screen, world.getCamera().getZoom(), -400);
+
+				for (int i = adjusted.size()-1; i >= 0; i--) {
+					adjusted.get(i).render(screen, world.getCamera().getZoom(), -400);
 				}
 				updateCameraInfo();
 			}
@@ -173,6 +174,7 @@ public class MainMenuController implements Initializable {
 				}
 			}
 		}.start();
+		screen.requestFocus();
 	}
 
 	private void updateCameraInfo() {
@@ -202,7 +204,7 @@ public class MainMenuController implements Initializable {
 		}catch (JSONException e){
 			Alert alert = new Alert(Alert.AlertType.ERROR,"Zawartość pliku musi być tablicą w formacie JSON",ButtonType.CLOSE);
 			alert.showAndWait();
-		}
+		}catch (NullPointerException ignore){}
 		screen.requestFocus();
 	}
 

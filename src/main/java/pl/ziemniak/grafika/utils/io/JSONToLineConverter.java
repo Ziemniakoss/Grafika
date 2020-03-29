@@ -8,20 +8,21 @@ import pl.ziemniak.grafika.utils.math.Vector;
 
 public class JSONToLineConverter extends JSONToObject3DConverter<Line> {
 	@Override
-	public Line convert(JSONObject json)throws NonParsableWorldException {
+	public Line convert(JSONObject json) throws NonParsableWorldException {
+		Vector a, b;
+		Color color;
+		JSONTo3DVectorConverter vectorConverter = JSONTo3DVectorConverter.getInstance();
 		try {
-			Vector a = new Vector(true,
-					json.getDouble("x1"),
-					json.getDouble("y1"),
-					json.getDouble("z1"));
-			Vector b = new Vector(true,
-					json.getDouble("x2"),
-					json.getDouble("y2"),
-					json.getDouble("z2"));
-			Color color = Color.web(json.getString("color"));
-			return new Line(a,b,color);
-		}catch (JSONException e){
-			throw new NonParsableWorldException("Could not read Line object from file");
+			a = vectorConverter.convert(json.getJSONObject("a"));
+			b = vectorConverter.convert(json.getJSONObject("b"));
+		} catch (JSONException e) {
+			throw new NonParsableWorldException("Line must have 2 points: a and b");
 		}
+		try {
+			color = Color.web(json.getString("color"));
+		} catch (JSONException e) {
+			throw new NonParsableWorldException("Line must have color");
+		}
+		return new Line(a, b, color);
 	}
 }

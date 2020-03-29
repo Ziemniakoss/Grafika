@@ -77,7 +77,7 @@ public class Camera {
 
 	public void setRotationX(double rotationX) {
 		this.rotationX = rotationX;
-		rotationMatrix = RotationMatrix.rotationMatrixXYZ(rotationX, rotationY, rotationZ);
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(-rotationX, -rotationY, -rotationZ);
 	}
 
 	public double getRotationY() {
@@ -86,7 +86,7 @@ public class Camera {
 
 	public void setRotationY(double rotationY) {
 		this.rotationY = rotationY;
-		rotationMatrix = RotationMatrix.rotationMatrixXYZ(rotationX, rotationY, rotationZ);
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(-rotationX, -rotationY, -rotationZ);
 	}
 
 	public double getRotationZ() {
@@ -95,7 +95,7 @@ public class Camera {
 
 	public void setRotationZ(double rotationZ) {
 		this.rotationZ = rotationZ;
-		rotationMatrix = RotationMatrix.rotationMatrixXYZ(rotationX, rotationY, rotationZ);
+		rotationMatrix = RotationMatrix.rotationMatrixXYZ(-rotationX, -rotationY, -rotationZ);
 	}
 
 	public void moveForward(double delta) {

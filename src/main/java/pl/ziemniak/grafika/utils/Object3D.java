@@ -20,4 +20,6 @@ abstract public class Object3D implements IRenderable {
 	 * @return największą wartość z wszystkich punktów należących do figury
 	 */
 	public abstract double getMaxDepth();
+
+	public abstract double getMinDepth();
 }
