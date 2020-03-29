@@ -19,35 +19,35 @@ public class Renderer implements IRenderer {
 
 	@Override
 	public void render(Line line) {
-		Vector aa = transformAndRotate(line.getA());
-		Vector bb = transformAndRotate(line.getB());
-		double x1 = aa.get(0) * (d / aa.get(2));
-		double y1 = aa.get(1) * (d / aa.get(2));
-		double x2 = bb.get(0) * (d / bb.get(2));
-		double y2 = bb.get(1) * (d / bb.get(2));
-		if (aa.get(2) < 0 && bb.get(2) < 0){
-			System.out.println('r');
-			return;
-		}
-		if (aa.get(2) < 0) {
-			cut(aa, bb);
-			x1 = aa.get(0) * d;
-			y1 = aa.get(1) * d;
-		} else if (bb.get(2) < 0) {
-			cut(bb, aa);
-
-			x2 = bb.get(0) * d;
-			y2 = bb.get(1) * d;
-		}
-
-		screen.drawLine(x1 * camera.getZoom(), y1 * camera.getZoom(),
-				x2 * camera.getZoom(), y2 * camera.getZoom(),
-				2 * camera.getZoom(), line.getColor());//todo wyliczanie grubosci
+		line.adjustToCamera(camera).render(screen,camera.getZoom(),d);
+//		Vector aa = transformAndRotate(line.getA());
+//		Vector bb = transformAndRotate(line.getB());
+//		double x1 = aa.get(0) * (d / aa.get(2));
+//		double y1 = aa.get(1) * (d / aa.get(2));
+//		double x2 = bb.get(0) * (d / bb.get(2));
+//		double y2 = bb.get(1) * (d / bb.get(2));
+//		if (aa.get(2) < 0 && bb.get(2) < 0){
+//			return;
+//		}
+//		if (aa.get(2) < 0) {
+//			cut(aa, bb);
+//			x1 = aa.get(0) * d;
+//			y1 = aa.get(1) * d;
+//		} else if (bb.get(2) < 0) {
+//			cut(bb, aa);
+//
+//			x2 = bb.get(0) * d;
+//			y2 = bb.get(1) * d;
+//		}
+//
+//		screen.drawLine(x1 * camera.getZoom(), y1 * camera.getZoom(),
+//				x2 * camera.getZoom(), y2 * camera.getZoom(),
+//				2 * camera.getZoom(), line.getColor());//todo wyliczanie grubosci
 	}
 
 	private Vector transformAndRotate(Vector v) {
 		Vector translated = v.subtract(camera.getCoordinates());
-		Vector rotated = RotationMatrix.rotationMatrixXYZ(camera.getRotationX(), camera.getRotationY(), camera.getRotationZ()).multiply(translated);
+		Vector rotated = RotationMatrix.rotationMatrixXYZ(-camera.getRotationX(), -camera.getRotationY(), -camera.getRotationZ()).multiply(translated);
 		return rotated;
 	}
 
@@ -67,4 +67,6 @@ public class Renderer implements IRenderer {
 		p1.set(1, newY);
 		p1.set(2, 0);
 	}
+
+
 }
