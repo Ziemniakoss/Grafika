@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
+import pl.ziemniak.grafika.utils.io.NonParsableWorldException;
 import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.UserMovementTypes;
 import pl.ziemniak.grafika.World;
@@ -98,7 +99,7 @@ public class MainMenuController implements Initializable {
 		IMapReader reader = new JSONMapReader("example.json");
 		try {
 			world.addAllLines(reader.read());
-		} catch (IOException e) {
+		} catch (IOException | NonParsableWorldException e) {
 			//todo dialog
 			e.printStackTrace();
 		}

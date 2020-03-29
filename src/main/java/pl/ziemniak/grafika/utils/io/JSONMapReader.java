@@ -47,30 +47,15 @@ public class JSONMapReader implements IMapReader {
 	 * @throws org.json.JSONException gdy podany plik zawiera jsona w błędnym formacie
 	 */
 	@Override
-	public List<Line> read() throws IOException {
+	public List<Line> read() throws IOException, NonParsableWorldException {
 		String json = Files.readString(Path.of(filename), StandardCharsets.UTF_8);
 		JSONArray ja = new JSONArray(json);
 		List<Line> lines = new ArrayList<>();
+		JSONToLineConverter converter = new JSONToLineConverter();
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject jo = ja.getJSONObject(i);
-
-			Vector a = new Vector(
-					true,
-					jo.getDouble("x1"),
-					jo.getDouble("y1"),
-					jo.getDouble("z1")
-
-			);
-			Vector b = new Vector(
-					true,
-					jo.getDouble("x2"),
-					jo.getDouble("y2"),
-					jo.getDouble("z2")
-
-			);
-			Line line = new Line(a, b, Color.web(jo.getString("color")));
-			System.out.println(line);
-			lines.add(line);
+			Line l = converter.convert(jo);
+			lines.add(l);
 		}
 		return lines;
 	}
