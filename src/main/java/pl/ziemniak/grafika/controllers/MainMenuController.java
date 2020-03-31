@@ -1,24 +1,28 @@
 package pl.ziemniak.grafika.controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.FileChooser;
 import org.json.JSONException;
-import pl.ziemniak.grafika.utils.DepthComparator;
-import pl.ziemniak.grafika.utils.Object3D;
-import pl.ziemniak.grafika.utils.io.*;
-import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.UserMovementTypes;
 import pl.ziemniak.grafika.World;
+import pl.ziemniak.grafika.utils.Object3D;
+import pl.ziemniak.grafika.utils.io.IWorldReader;
+import pl.ziemniak.grafika.utils.io.JSONWorldReader;
+import pl.ziemniak.grafika.utils.io.NonParsableWorldException;
+import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.utils.rendering.Screen;
+import pl.ziemniak.grafika.utils.rendering.sorting.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +34,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class MainMenuController implements Initializable {
+	@FXML
+	private ComboBox<String> comboSorting;
 	@FXML
 	private Label labelRotZ;
 	@FXML
@@ -55,6 +61,7 @@ public class MainMenuController implements Initializable {
 	private World world;
 	private final HashMap<UserMovementTypes, Boolean> userInputState;
 	private final HashMap<KeyCode, UserMovementTypes> keyBindings;
+	private DepthComparator comparator = new MinMaxZComparator();
 
 	public MainMenuController() {
 		userInputState = new HashMap<>();
@@ -112,6 +119,30 @@ public class MainMenuController implements Initializable {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		comboSorting.setOnAction(e -> {
+			switch (comboSorting.getValue()) {
+				case "Min Z":
+					comparator = new MinZComparator();
+					break;
+				case "Max Z":
+					comparator = new MaxZComparator();
+					break;
+				case "Min-Max Z":
+					comparator = new MinMaxZComparator();
+					break;
+				case "Mid Z":
+					comparator = new MidZComparator();
+					break;
+			}
+			System.out.println("Używamy: " + comparator.getClass().getName());
+		});
+		comboSorting.setItems(FXCollections.observableArrayList(
+				"Min Z",
+				"Max Z",
+				"Min-Max Z",
+				"Mid Z"
+		));
+		comboSorting.setValue("Min-Max Z");
 		new AnimationTimer() {
 			private long lastUpdate = System.nanoTime();
 
@@ -123,10 +154,10 @@ public class MainMenuController implements Initializable {
 				screen.clear();
 				List<Object3D> adjusted = world.getObject3DS().parallelStream().
 						map(e -> e.adjustToCamera(world.getCamera())).
-						sorted(new DepthComparator()).
+						sorted(comparator).
 						collect(Collectors.toList());
 
-				for (int i = adjusted.size()-1; i >= 0; i--) {
+				for (int i = adjusted.size() - 1; i >= 0; i--) {
 					adjusted.get(i).render(screen, world.getCamera().getZoom(), -400);
 				}
 				updateCameraInfo();
@@ -196,15 +227,16 @@ public class MainMenuController implements Initializable {
 		try {
 			readWorldFromFile(f.getName());
 		} catch (IOException e) {
-			Alert alert = new Alert(Alert.AlertType.ERROR,"Plik nie istnieje", ButtonType.CLOSE);
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Plik nie istnieje", ButtonType.CLOSE);
 			alert.showAndWait();
 		} catch (NonParsableWorldException e) {
-			Alert alert = new Alert(Alert.AlertType.ERROR,"NIepoprawna zawwartość pliku\n\n"+e.getMessage(),ButtonType.CLOSE);
+			Alert alert = new Alert(Alert.AlertType.ERROR, "NIepoprawna zawwartość pliku\n\n" + e.getMessage(), ButtonType.CLOSE);
 			alert.showAndWait();
-		}catch (JSONException e){
-			Alert alert = new Alert(Alert.AlertType.ERROR,"Zawartość pliku musi być tablicą w formacie JSON",ButtonType.CLOSE);
+		} catch (JSONException e) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Zawartość pliku musi być tablicą w formacie JSON", ButtonType.CLOSE);
 			alert.showAndWait();
-		}catch (NullPointerException ignore){}
+		} catch (NullPointerException ignore) {
+		}
 		screen.requestFocus();
 	}
 

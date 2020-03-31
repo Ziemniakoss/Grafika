@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import pl.ziemniak.grafika.utils.rendering.Screen?>
-<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
-			xmlns:fx="http://javafx.com/fxml"
-			fx:controller="pl.ziemniak.grafika.controllers.MainMenuController" stylesheets="style.css">
-	<left>
-		<VBox>
-			<!--Kamera-->
-			<Label>Kamera</Label>
-			<GridPane>
-				<padding>
-					<Insets top="10" left="0" right="10" bottom="10"/>
-				</padding>
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="pl.ziemniak.grafika.controllers.MainMenuController" stylesheets="style.css">
+    <left>
+        <VBox>
+            <!--Kamera-->
+            <Label>Kamera</Label>
+            <GridPane>
+                <padding>
+                    <Insets top="10" right="10" bottom="10"/>
+                </padding>
 
-				<Label fx:id="labelWorldName" styleClass="data-info">Przykład</Label>
-				<Button  styleClass="dark-button" onAction="#readWorld" GridPane.columnIndex="1">Wczytaj</Button>
+                <Label fx:id="labelWorldName" styleClass="data-info">Przykład</Label>
+                <Button styleClass="dark-button" onAction="#readWorld" GridPane.columnIndex="1">Wczytaj</Button>
 
-				<Label styleClass="data-info" GridPane.rowIndex="1">X</Label>
-				<Label fx:id="labelX" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="data-value">0.00</Label>
+                <Label styleClass="data-info" GridPane.rowIndex="1">Sortowanie</Label>
+                <ComboBox fx:id="comboSorting" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                </ComboBox>
 
-				<Label styleClass="data-info" GridPane.rowIndex="2">Y</Label>
-				<Label fx:id="labelY" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="data-value">0.00
-				</Label>
+                <Label styleClass="data-info" GridPane.rowIndex="2">X</Label>
+                <Label fx:id="labelX" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="data-value">0.00
+                </Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="3">Z</Label>
-				<Label fx:id="labelZ" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="data-value">0.00
-				</Label>
+                <Label styleClass="data-info" GridPane.rowIndex="3">Y</Label>
+                <Label fx:id="labelY" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="data-value">0.00
+                </Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="4">Rotation X</Label>
-				<Label fx:id="labelRotX" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="data-value">0.00
-				</Label>
+                <Label styleClass="data-info" GridPane.rowIndex="4">Z</Label>
+                <Label fx:id="labelZ" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="data-value">0.00
+                </Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="5">Rotation Y</Label>
-				<Label fx:id="labelRotY" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="data-value">0.00
-				</Label>
+                <Label styleClass="data-info" GridPane.rowIndex="5">Rotation X</Label>
+                <Label fx:id="labelRotX" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="data-value">0.00
+                </Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="6">Rotation Z</Label>
-				<Label fx:id="labelRotZ" GridPane.columnIndex="1" GridPane.rowIndex="6" styleClass="data-value">0.00
-				</Label>
+                <Label styleClass="data-info" GridPane.rowIndex="6">Rotation Y</Label>
+                <Label fx:id="labelRotY" GridPane.columnIndex="1" GridPane.rowIndex="6" styleClass="data-value">0.00
+                </Label>
 
-				<Label styleClass="data-info" GridPane.rowIndex="7">Zoom</Label>
-				<Label fx:id="labelZoom" GridPane.rowIndex="7" GridPane.columnIndex="1" styleClass="data-value">1.0</Label>
-			</GridPane>
-		</VBox>
-	</left>
-	<center>
-		<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity">
-			<Screen AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-					AnchorPane.topAnchor="0" fx:id="screen" height="1000" width="1000" onKeyPressed="#handleKeyPress" onKeyReleased="#handleKeyRelease" onScroll="#handleScroll"/>
-		</AnchorPane>
-	</center>
+                <Label styleClass="data-info" GridPane.rowIndex="7">Rotation Z</Label>
+                <Label fx:id="labelRotZ" GridPane.columnIndex="1" GridPane.rowIndex="7" styleClass="data-value">0.00
+                </Label>
+
+                <Label styleClass="data-info" GridPane.rowIndex="8">Zoom</Label>
+                <Label fx:id="labelZoom" GridPane.rowIndex="8" GridPane.columnIndex="1" styleClass="data-value">1.0
+                </Label>
+            </GridPane>
+        </VBox>
+    </left>
+    <center>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity">
+            <Screen AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                    AnchorPane.topAnchor="0" fx:id="screen" height="1000" width="1000" onKeyPressed="#handleKeyPress"
+                    onKeyReleased="#handleKeyRelease" onScroll="#handleScroll"/>
+        </AnchorPane>
+    </center>
 </BorderPane>

@@ -45,15 +45,6 @@ public class Line extends Object3D {
 		return new Line(newA, newB, color);
 	}
 
-	@Override
-	public double getMaxDepth() {
-		return Math.max(a.get(2), b.get(2));
-	}
-
-	@Override
-	public double getMinDepth() {
-		return Math.min(a.get(2),b.get(2));
-	}
 
 	@Override
 	public void render(Screen screen, double zoom, double d) {
@@ -63,13 +54,33 @@ public class Line extends Object3D {
 		Vector aa = a;
 		Vector bb = b;
 		if (aa.get(2) < 0) {
-			aa=Utils3D.cut(aa, bb);
+			aa = Utils3D.cut(aa, bb);
 		} else if (bb.get(2) < 0) {
-			bb=Utils3D.cut(bb, aa);
+			bb = Utils3D.cut(bb, aa);
 		}
 		aa = Utils3D.cast(aa, d);
 		bb = Utils3D.cast(bb, d);
 		screen.drawLine(aa.get(0) * zoom, aa.get(1) * zoom,
 				bb.get(0) * zoom, bb.get(1) * zoom, 2 * zoom, color);
+	}
+
+	@Override
+	public double getMaxZ() {
+		return Math.max(a.get(2), b.get(2));
+	}
+
+	@Override
+	public double getMinZ() {
+		return Math.min(a.get(2), b.get(2));
+	}
+
+	@Override
+	public double getMidZ() {
+		return (a.get(2) + b.get(2)) / 2;
+	}
+
+	@Override
+	public double[] getAllZ() {
+		return new double[]{a.get(2), b.get(2)};
 	}
 }

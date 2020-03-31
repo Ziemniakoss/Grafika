@@ -79,7 +79,7 @@ public class Triangle extends Object3D {
 			return;
 		}
 		GraphicsContext gc = screen.getGraphicsContext2D();
-		List<Vector> points ;
+		List<Vector> points;
 		if (a.get(2) >= 0) {
 			points = calculatePoints(a, b, c);
 		} else if (b.get(2) >= 0) {
@@ -154,12 +154,22 @@ public class Triangle extends Object3D {
 	}
 
 	@Override
-	public double getMaxDepth() {
+	public double getMaxZ() {
 		return Math.max(a.get(2), Math.max(b.get(2), c.get(2)));
 	}
 
 	@Override
-	public double getMinDepth() {
-		return Math.min(a.get(2),Math.min(b.get(2),c.get(2)));
+	public double getMinZ() {
+		return Math.min(a.get(2), Math.min(b.get(2), c.get(2)));
+	}
+
+	@Override
+	public double getMidZ() {
+		return (a.get(2) + b.get(2) + c.get(2)) / 3;
+	}
+
+	@Override
+	public double[] getAllZ() {
+		return new double[]{a.get(2), b.get(2), c.get(2)};
 	}
 }

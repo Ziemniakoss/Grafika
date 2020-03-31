@@ -2,8 +2,9 @@ package pl.ziemniak.grafika.utils;
 
 import pl.ziemniak.grafika.utils.rendering.Camera;
 import pl.ziemniak.grafika.utils.rendering.IRenderable;
+import pl.ziemniak.grafika.utils.rendering.sorting.SortableByDepth;
 
-abstract public class Object3D implements IRenderable {
+abstract public class Object3D implements IRenderable, SortableByDepth {
 	/**
 	 * "Przenosi" obiekt do układu współrzędnych zależnego od kamery.
 	 *
@@ -12,14 +13,4 @@ abstract public class Object3D implements IRenderable {
 	 * zależnym od kamery
 	 */
 	public abstract Object3D adjustToCamera(Camera camera);
-
-	/**
-	 * Zwraca największą głębokość punktu figury Niezbędne do posortowania
-	 * obiektów dla algorytmu malarza
-	 *
-	 * @return największą wartość z wszystkich punktów należących do figury
-	 */
-	public abstract double getMaxDepth();
-
-	public abstract double getMinDepth();
 }
